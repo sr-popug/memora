@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Memora',
-  description: 'Сохраняй самое важное!',
+  description: 'Запоминай самое важное!',
 }
 
 export default function RootLayout({
@@ -24,7 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ru'>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        className={`dark ${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         {children}
       </body>
     </html>
