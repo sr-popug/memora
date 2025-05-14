@@ -1,4 +1,4 @@
-import AuthForm from '@/widgets/auth/AuthForm/AuthForm'
+import ButtonGitHub from '@/widgets/auth/ButtonGitHub'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -18,21 +18,12 @@ export default function Auth() {
         <div></div>
         <div className='flex flex-col items-center justify-center'>
           <h1 className='text-5xl font-bold text-center'>Войти в аккаунт</h1>
-          <p className='opacity-60 mt-2'>
-            Введите эл. почту и пароль, чтобы войти в свою учетную запись
-          </p>
 
           <p className='opacity-60 mb-5'>
-            Также можно авторизоваться через социальные сети
+            Можно авторизоваться только через социальные сети
           </p>
-          <AuthForm />
-
-          <p className='text-gray-500 mt-5'>
-            Ещё нет аккаунта?{' '}
-            <Link className='text-blue-500 hover:underline' href='/register'>
-              Зарегистрироваться!
-            </Link>{' '}
-          </p>
+          <div className='flex flex-col items-stretch w-full gap-3 max-w-[500px]'></div>
+          <ButtonGitHub />
         </div>
         <footer className='text-center'>
           <Link href='/' className='opacity-50 block mb-2 underline'>
