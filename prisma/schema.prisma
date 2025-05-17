@@ -48,4 +48,5 @@ model Edge {
 enum TypesOfBlock {
   text
   table
+  image
 }

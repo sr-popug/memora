@@ -4,7 +4,6 @@ import { NextRequest } from 'next/server'
 export async function GET(NextRequest: NextRequest) {
   const searchParams = NextRequest.nextUrl.searchParams
   const id = searchParams.get('id') || null
-  console.log(id)
 
   if (id) {
     try {

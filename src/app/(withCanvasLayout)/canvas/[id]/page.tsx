@@ -1,3 +1,5 @@
+import CanvasPage from '@/widgets/canvas/CanvasPage'
+
 export default function page() {
-  return <div>page</div>
+  return <CanvasPage />
 }
