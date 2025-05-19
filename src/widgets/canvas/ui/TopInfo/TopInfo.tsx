@@ -6,7 +6,7 @@ export default function TopInfo({ id }: { id: string }) {
   const { data } = useThemeByID(id)
   return (
     <div>
-      <article className='w-fit relative top-2 left-2 flex gap-1 bg-neutral-900 border-neutral-500 border-1 p-2 rounded-lg z-10'>
+      <article className='w-fit relative top-2 left-2 flex gap-1 bg-neutral-900 border-neutral-800 border-1 p-2 rounded-lg z-10'>
         {data && (
           <div className='flex justify-between items-center gap-5 '>
             <div className='flex gap-2'>
@@ -18,7 +18,7 @@ export default function TopInfo({ id }: { id: string }) {
                 <p className='text-neutral-700 text-sm'>{data.id}</p>
               </div>
             </div>
-            <Menu />
+            <Menu id={id} />
           </div>
         )}
         {!data && <InfoSkeleton />}

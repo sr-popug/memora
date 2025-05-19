@@ -29,8 +29,6 @@ model Block {
   positionX Int
   positionY Int
   content   String
-  image     String?
-  link      String?
   type      String
   Theme     Theme?  @relation(fields: [themeId], references: [id])
   themeId   String?

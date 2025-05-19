@@ -1,5 +1,4 @@
 'use client'
-import addTheme from '@/entities/Themes/api/addTheme'
 import { Button } from '@/shared/ui/button'
 import {
   Dialog,
@@ -11,33 +10,29 @@ import {
   DialogTrigger,
 } from '@/shared/ui/dialog'
 import { Input } from '@/shared/ui/input'
+
+import changeTheme from '@/entities/Themes/api/changeTheme'
 import SelectEmoji from '@/shared/ui/SelectEmoji/SelectEmoji'
-import { Theme } from '@prisma/client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { Pen } from 'lucide-react'
 import { useRef, useState } from 'react'
 
-export default function AddTheme() {
+export default function ChangeMenu({ id }: { id: string }) {
   const [emoji, setEmoji] = useState('😀')
   const [open, setOpen] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
   const queryClient = useQueryClient()
-  const router = useRouter()
-  const session = useSession()
   const { mutate } = useMutation({
-    mutationKey: ['add theme'],
+    mutationKey: ['change theme'],
     mutationFn: () =>
-      addTheme({
+      changeTheme({
+        id: id,
         name: nameRef.current?.value as string,
         emoji,
-        userEmail: session.data?.user.email || 'not-found',
       }),
-    onSuccess: (data: Theme) => {
+    onSuccess: () => {
       setOpen(false)
-      queryClient.invalidateQueries({ queryKey: ['themes'] }).then(() => {
-        router.push(`/canvas/${data.id}`)
-      })
+      queryClient.invalidateQueries({ queryKey: ['themes'] })
     },
     onError: () => {
       console.log('⨯ error')
@@ -50,15 +45,15 @@ export default function AddTheme() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className='mt-4 w-full cursor-pointer' variant='outline'>
-          Добавить
+        <Button className=' cursor-pointer' variant='outline'>
+          <Pen /> Изменить
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Добавить доску темы</DialogTitle>
+          <DialogTitle>Изменить доску</DialogTitle>
           <DialogDescription>
-            Вы можете добавить новую доску по определенной теме
+            Вы можете изменить название и емоджи доски темы
           </DialogDescription>
         </DialogHeader>
         <div className='grid gap-4 py-2'>

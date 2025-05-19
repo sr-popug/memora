@@ -4,9 +4,11 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/shared/ui/hover-card'
-import { EllipsisVerticalIcon, Pen, Trash } from 'lucide-react'
+import { EllipsisVerticalIcon } from 'lucide-react'
+import ChangeMenu from './ChangeMenu'
+import DeleteMenu from './DeleteMenu'
 
-export default function Menu() {
+export default function Menu({ id }: { id: string }) {
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
@@ -19,12 +21,8 @@ export default function Menu() {
       </HoverCardTrigger>
       <HoverCardContent className=''>
         <div className='flex justify-between space-x-1'>
-          <Button variant='destructive' className='cursor-pointer'>
-            <Trash /> Удалить
-          </Button>
-          <Button variant='outline' className='cursor-pointer'>
-            <Pen /> Изменить
-          </Button>
+          <DeleteMenu id={id} />
+          <ChangeMenu id={id} />
         </div>
       </HoverCardContent>
     </HoverCard>
