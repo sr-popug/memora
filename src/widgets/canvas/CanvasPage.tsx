@@ -1,16 +1,31 @@
 'use client'
+import { useAppDispatch } from '@/shared/lib/react/redux'
 import useCanvasData from '@/shared/lib/react/useCanvasData'
+import { setWidth } from '@/shared/store/slices/canvasSlice'
+import { setThemeId } from '@/shared/store/slices/themeSlice'
+import { ReactFlowProvider } from '@xyflow/react'
 import { LoaderCircle, RefreshCwOff } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { useEffect, useRef } from 'react'
 import Canvas from './ui/Canvas/Canvas'
 import Instruments from './ui/Instruments/Instruments'
 import TopInfo from './ui/TopInfo/TopInfo'
 
 export default function CanvasPage() {
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const dispatch = useAppDispatch()
   const pathname = usePathname()
   const id = pathname.split('/')[2]
   const data = useCanvasData(id)
-  console.log(data)
+  useEffect(() => {
+    if (wrapperRef.current) {
+      const { width } = wrapperRef.current.getBoundingClientRect()
+      dispatch(setWidth({ width }))
+    }
+    if (id) {
+      dispatch(setThemeId({ id }))
+    }
+  }, [])
   if (data.blocksLoading || data.edgesLoading) {
     return (
       <div className='w-full h-[94%] flex items-center justify-center flex-col gap-5'>
@@ -29,11 +44,15 @@ export default function CanvasPage() {
   }
   return (
     <article className='relative w-full h-[94%]'>
-      <div className='absolute  w-full h-full'>
-        <TopInfo id={id} />
-        <Instruments />
-      </div>
-      <Canvas canvasData={[data.blocks, data.edges]} />
+      <ReactFlowProvider>
+        <div className='absolute  w-full h-full'>
+          <TopInfo id={id} />
+          <Instruments />
+        </div>
+        <div ref={wrapperRef} className='w-full h-full'>
+          <Canvas canvasData={[data.blocks, data.edges]} />
+        </div>
+      </ReactFlowProvider>
     </article>
   )
 }

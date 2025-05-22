@@ -1,6 +1,6 @@
 'use client'
-import getBlocks from '@/entities/Themes/api/getBlocks'
-import getEdges from '@/entities/Themes/api/getEdges'
+import getBlocks from '@/entities/Block/api/getBlocks'
+import getEdges from '@/entities/Edge/api/getEdges'
 import { Block, Edge } from '@prisma/client'
 import { useQueries } from '@tanstack/react-query'
 
@@ -17,9 +17,9 @@ export default function useCanvasData(themeID: string) {
       },
     ],
   })
+  console.log(results[0])
   const blocksResult = results[0]
   const edgesResult = results[1]
-  console.log(blocksResult)
   return {
     blocks: blocksResult.data as Block[] | undefined,
     blocksLoading: blocksResult.isLoading,

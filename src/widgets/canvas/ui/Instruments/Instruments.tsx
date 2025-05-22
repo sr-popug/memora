@@ -1,10 +1,7 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/shared/ui/tooltip'
-import { Image, Link, Text } from 'lucide-react'
+import { TooltipProvider } from '@/shared/ui/tooltip'
+import { CreateText } from './ui/CreateImage'
+import { CreateLink } from './ui/CreateLink'
+import { CreateImage } from './ui/CreateText'
 
 export default function Instruments() {
   return (
@@ -12,40 +9,13 @@ export default function Instruments() {
       <TooltipProvider>
         <ul className='flex  items-center gap-3'>
           <li className='bg-neutral-700 w-8 h-8 flex items-center justify-center rounded-sm'>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button className='cursor-pointer'>
-                  <Link />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Добавить ссылку</p>
-              </TooltipContent>
-            </Tooltip>
+            <CreateLink />
           </li>
           <li className='bg-neutral-700 w-8 h-8 flex items-center justify-center rounded-sm'>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button className='cursor-pointer'>
-                  <Image />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Добавить картинку</p>
-              </TooltipContent>
-            </Tooltip>
+            <CreateImage />
           </li>
           <li className='bg-neutral-700 w-8 h-8 flex items-center justify-center rounded-sm'>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button className='cursor-pointer'>
-                  <Text />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Добавить текст</p>
-              </TooltipContent>
-            </Tooltip>
+            <CreateText />
           </li>
         </ul>
       </TooltipProvider>

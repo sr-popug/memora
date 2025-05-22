@@ -1,9 +1,12 @@
+import { useAppSelector } from '@/shared/lib/react/redux'
 import useThemeByID from '@/shared/lib/react/useThemeByID'
 import InfoSkeleton from './InfoSkeleton'
 import Menu from './Menu'
 
-export default function TopInfo({ id }: { id: string }) {
+export default function TopInfo() {
+  const { id } = useAppSelector(state => state.theme)
   const { data } = useThemeByID(id)
+
   return (
     <div>
       <article className='w-fit relative top-2 left-2 flex gap-1 bg-neutral-900 border-neutral-800 border-1 p-2 rounded-lg z-10'>

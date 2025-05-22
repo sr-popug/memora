@@ -1,7 +1,11 @@
 import type { Config } from 'tailwindcss'
 export default {
   darkMode: 'class',
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}', './@/**/*.{ts,tsx}'],
+  content: [
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+    './@/**/*.{ts,tsx}',
+    './node_modules/sonner/dist/**/*.{js,ts}',
+  ],
   theme: {
     extend: {
       colors: {

@@ -1,4 +1,4 @@
-import deleteTheme from '@/features/delete-theme/deleteTheme'
+import deleteTheme from '@/features/theme/delete-theme/deleteTheme'
 import {
   AlertDialog,
   AlertDialogAction,
