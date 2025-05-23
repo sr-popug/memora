@@ -1,4 +1,5 @@
 'use client'
+import createBlock from '@/entities/Block/api/createBlock'
 import { useAppSelector } from '@/shared/lib/react/redux'
 import { Button } from '@/shared/ui/button'
 import {
@@ -10,27 +11,48 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog'
+import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
-import { Textarea } from '@/shared/ui/textarea'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip'
-import { useMutation } from '@tanstack/react-query'
-import { Text } from 'lucide-react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useReactFlow } from '@xyflow/react'
+import { Image } from 'lucide-react'
 import { useRef, useState } from 'react'
 
-export function CreateText() {
+export default function CreateImage() {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [open, setOpen] = useState(false)
+  const canvas = useAppSelector(state => state.canvas)
   const { id } = useAppSelector(state => state.theme)
-
+  const queryClient = useQueryClient()
+  const [open, setOpen] = useState(false)
+  const project = useReactFlow()
   const { mutate } = useMutation({
     mutationKey: ['blocks', id],
-    mutationFn: (value: string) => {},
+    mutationFn: (value: string) =>
+      createBlock({
+        content: value,
+        themeId: id,
+        positionX: project.getViewport().x + canvas.width / 1.75,
+        positionY: project.getViewport().y + window.innerHeight / 2 - 80,
+        type: 'text',
+      })
+        .then(() => {
+          setIsLoading(false)
+          setOpen(false)
+          queryClient
+            .invalidateQueries({ queryKey: ['blocks', id] })
+            .then(() => {})
+        })
+        .catch(() => {
+          setIsLoading(false)
+        }),
   })
 
-  async function handleClick() {
+  function handleClick() {
+    console.log(inputRef.current?.value)
     setIsLoading(true)
-    if (inputRef.current?.value) await mutate(inputRef.current?.value)
+    if (inputRef.current?.value) mutate(inputRef.current?.value)
     setIsLoading(false)
     setOpen(false)
   }
@@ -42,28 +64,34 @@ export function CreateText() {
           <Tooltip>
             <TooltipTrigger asChild>
               <span>
-                <Text />
+                <Image />
               </span>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Добавить текстовый блок</p>
+              <p>Добавить картинку</p>
             </TooltipContent>
           </Tooltip>
         </button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Добавить текстовый блок</DialogTitle>
+          <DialogTitle>Добавить картинку</DialogTitle>
           <DialogDescription>
-            Напишите содержание для вашего блока
+            Выберите изображение с вашего устройства и добавьте его на доску
+            темы
           </DialogDescription>
         </DialogHeader>
         <div className=''>
           <div className=''>
             <Label htmlFor='username' className='text-right mb-2'>
-              Текст
+              Ссылка
             </Label>
-            <Textarea placeholder='Содержание текстового блока' />
+            <Input
+              ref={inputRef}
+              type='image'
+              id='link'
+              className='col-span-3'
+            />
           </div>
         </div>
         <DialogFooter>

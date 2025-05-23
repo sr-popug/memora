@@ -8,7 +8,7 @@ import { EllipsisVerticalIcon } from 'lucide-react'
 import ChangeMenu from './ChangeMenu'
 import DeleteMenu from './DeleteMenu'
 
-export default function Menu({ id }: { id: string }) {
+export default function Menu({ id, name }: { id: string; name: string }) {
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
@@ -19,10 +19,10 @@ export default function Menu({ id }: { id: string }) {
           <EllipsisVerticalIcon />
         </Button>
       </HoverCardTrigger>
-      <HoverCardContent className=''>
-        <div className='flex justify-between space-x-1'>
+      <HoverCardContent className='w-50'>
+        <div className='flex flex-col  gap-2'>
+          <ChangeMenu prevName={name} id={id} />
           <DeleteMenu id={id} />
-          <ChangeMenu id={id} />
         </div>
       </HoverCardContent>
     </HoverCard>

@@ -5,8 +5,14 @@ import { ClipboardCopy, Link } from 'lucide-react'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { toast } from 'sonner'
+import ChangeBlock from './ChangeBlock'
+import DeleteBlock from './DeleteBlock'
 
-export default function LinkBlock({ data }: { data: { label: string } }) {
+export default function LinkBlock({
+  data,
+}: {
+  data: { label: string; id: string; type: string }
+}) {
   const { data: openGraphData } = useOGData(data.label)
 
   function handleCopyButton() {
@@ -27,14 +33,14 @@ export default function LinkBlock({ data }: { data: { label: string } }) {
                 height={14}
                 alt='favicon'
               />
-              <p className='text-sm'>
+              <p className='text-sm text-neutral-500'>
                 {data.label.split('https://').join('').split('/')[0]}
               </p>
             </div>
           </TooltipTrigger>
           {openGraphData && (
             <div>
-              <h3 className='mb-2 font-bold'>{openGraphData?.data.ogTitle}</h3>
+              <h3 className='mb-2 font-bold '>{openGraphData?.data.ogTitle}</h3>
               {openGraphData?.data.ogImage &&
                 openGraphData?.data.ogImage[0].url && (
                   <Image
@@ -54,35 +60,58 @@ export default function LinkBlock({ data }: { data: { label: string } }) {
           </TooltipContent>
         </Tooltip>
 
-        <div className='flex justify-end gap-3 mt-2'>
-          <Tooltip>
-            <TooltipTrigger>
-              <NextLink
-                href={data.label}
-                className='cursor-pointer nodrag'
-                target='_blank'
-              >
-                <Link
-                  width={20}
-                  height={20}
-                  className=' text-neutral-600 hover:text-neutral-300 transition-colors'
+        <div className='min-w-40 flex justify-between gap-3 mt-2'>
+          <div className='flex gap-2 '>
+            <Tooltip>
+              <TooltipTrigger>
+                <DeleteBlock id={data.id} />
+              </TooltipTrigger>
+              <TooltipContent>Удалить</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <ChangeBlock
+                  type={data.type}
+                  prevLabel={data.label}
+                  id={data.id}
                 />
-              </NextLink>
-            </TooltipTrigger>
-            <TooltipContent>Перейти по ссылке</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <div className='cursor-pointer nodrag' onClick={handleCopyButton}>
-                <ClipboardCopy
-                  width={20}
-                  height={20}
-                  className=' text-neutral-600 hover:text-neutral-300 transition-colors'
-                />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>Копировать ссылку</TooltipContent>
-          </Tooltip>
+              </TooltipTrigger>
+              <TooltipContent>Изменить</TooltipContent>
+            </Tooltip>
+          </div>
+          <div className='flex gap-2 align-center'>
+            <Tooltip>
+              <TooltipTrigger>
+                <NextLink
+                  href={data.label}
+                  className='cursor-pointer nodrag'
+                  target='_blank'
+                >
+                  <Link
+                    width={20}
+                    height={20}
+                    className=' text-neutral-600 hover:text-neutral-300 transition-colors'
+                  />
+                </NextLink>
+              </TooltipTrigger>
+              <TooltipContent>Перейти по ссылке</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <div
+                  className='cursor-pointer nodrag'
+                  onClick={handleCopyButton}
+                >
+                  <ClipboardCopy
+                    width={20}
+                    height={20}
+                    className=' text-neutral-600 hover:text-neutral-300 transition-colors'
+                  />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>Копировать ссылку</TooltipContent>
+            </Tooltip>
+          </div>
         </div>
       </div>
       <Handle type='source' position={Position.Bottom} />

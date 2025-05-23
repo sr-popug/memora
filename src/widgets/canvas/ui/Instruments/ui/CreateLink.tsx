@@ -19,7 +19,7 @@ import { useReactFlow } from '@xyflow/react'
 import { Link } from 'lucide-react'
 import { useRef, useState } from 'react'
 
-export function CreateLink() {
+export default function CreateLink() {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const canvas = useAppSelector(state => state.canvas)

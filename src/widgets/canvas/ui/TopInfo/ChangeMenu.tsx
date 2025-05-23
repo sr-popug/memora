@@ -17,7 +17,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Pen } from 'lucide-react'
 import { useRef, useState } from 'react'
 
-export default function ChangeMenu({ id }: { id: string }) {
+export default function ChangeMenu({
+  id,
+  prevName,
+}: {
+  id: string
+  prevName: string
+}) {
   const [emoji, setEmoji] = useState('😀')
   const [open, setOpen] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
@@ -61,6 +67,7 @@ export default function ChangeMenu({ id }: { id: string }) {
             <SelectEmoji emojiState={emoji} setEmojiState={setEmoji} />
             <Input
               ref={nameRef}
+              defaultValue={prevName}
               minLength={5}
               placeholder='Введите название темы'
             />

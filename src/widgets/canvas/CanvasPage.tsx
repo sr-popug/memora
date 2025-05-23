@@ -46,11 +46,13 @@ export default function CanvasPage() {
     <article className='relative w-full h-[94%]'>
       <ReactFlowProvider>
         <div className='absolute  w-full h-full'>
-          <TopInfo id={id} />
+          <TopInfo />
           <Instruments />
         </div>
         <div ref={wrapperRef} className='w-full h-full'>
-          <Canvas canvasData={[data.blocks, data.edges]} />
+          {data.blocks && data.edges && (
+            <Canvas canvasData={[data.blocks, data.edges]} />
+          )}
         </div>
       </ReactFlowProvider>
     </article>

@@ -89,7 +89,7 @@ export default function Canvas({
       .map(b => ({
         id: b.id,
         position: { x: b.positionX, y: b.positionY },
-        data: { label: b.content },
+        data: { label: b.content, id: b.id, type: b.type },
         type: b.type,
       }))
     setNodes(newNodes)

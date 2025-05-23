@@ -21,7 +21,7 @@ export default function TopInfo() {
                 <p className='text-neutral-700 text-sm'>{data.id}</p>
               </div>
             </div>
-            <Menu id={id} />
+            <Menu name={data.name} id={id} />
           </div>
         )}
         {!data && <InfoSkeleton />}

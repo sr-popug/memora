@@ -13,6 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  email String  @unique
+  isVip Boolean
+}
+
 model Theme {
   id       String @id @default(uuid())
   name     String

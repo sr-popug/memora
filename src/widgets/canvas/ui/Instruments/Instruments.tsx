@@ -1,7 +1,7 @@
 import { TooltipProvider } from '@/shared/ui/tooltip'
-import { CreateText } from './ui/CreateImage'
-import { CreateLink } from './ui/CreateLink'
-import { CreateImage } from './ui/CreateText'
+import CreateImage from './ui/CreateImage'
+import CreateLink from './ui/CreateLink'
+import CreateText from './ui/CreateText'
 
 export default function Instruments() {
   return (

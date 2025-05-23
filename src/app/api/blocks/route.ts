@@ -46,6 +46,8 @@ export async function POST(NextRequest: NextRequest) {
         },
       })
     }
+    if (type == 'image') {
+    }
 
     return new Response(JSON.stringify(JSON.parse(JSON.stringify(result))), {
       status: 200,
