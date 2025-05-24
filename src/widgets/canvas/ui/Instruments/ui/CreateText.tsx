@@ -11,21 +11,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog'
-import { Label } from '@/shared/ui/label'
-import { Textarea } from '@/shared/ui/textarea'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useReactFlow } from '@xyflow/react'
 import { Text } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
+import TextEditor from '../../Canvas/ui/TextEditor'
 
 export default function CreateText() {
-  const inputRef = useRef<HTMLTextAreaElement>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [open, setOpen] = useState(false)
+
+  const [text, setText] = useState('')
+
   const canvas = useAppSelector(state => state.canvas)
   const { id } = useAppSelector(state => state.theme)
   const queryClient = useQueryClient()
-  const [open, setOpen] = useState(false)
   const project = useReactFlow()
   const { mutate } = useMutation({
     mutationKey: ['blocks', id],
@@ -50,9 +51,9 @@ export default function CreateText() {
   })
 
   async function handleClick() {
-    console.log(inputRef.current?.value)
+    console.log(text)
     setIsLoading(true)
-    if (inputRef.current?.value) await mutate(inputRef.current?.value)
+    if (text) await mutate(text)
     setIsLoading(false)
     setOpen(false)
   }
@@ -82,13 +83,7 @@ export default function CreateText() {
         </DialogHeader>
         <div className=''>
           <div className=''>
-            <Label htmlFor='username' className='text-right mb-2'>
-              Текст
-            </Label>
-            <Textarea
-              ref={inputRef}
-              placeholder='Содержание текстового блока'
-            />
+            <TextEditor text={text} setText={setText} />
           </div>
         </div>
         <DialogFooter>

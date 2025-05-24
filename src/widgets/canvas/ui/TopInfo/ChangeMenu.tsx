@@ -79,7 +79,7 @@ export default function ChangeMenu({
             type='submit'
             className='cursor-pointer'
           >
-            Добавить
+            Изменить
           </Button>
         </DialogFooter>
       </DialogContent>

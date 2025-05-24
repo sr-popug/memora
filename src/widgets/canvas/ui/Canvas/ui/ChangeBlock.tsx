@@ -12,10 +12,10 @@ import {
 } from '@/shared/ui/dialog'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
-import { Textarea } from '@/shared/ui/textarea'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Loader, SquarePen } from 'lucide-react'
 import { RefObject, useRef, useState } from 'react'
+import TextEditor from './TextEditor'
 export default function ChangeBlock({
   id,
   prevLabel,
@@ -29,13 +29,14 @@ export default function ChangeBlock({
   const [isLoading, setIsLoading] = useState(false)
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
+  const [text, setText] = useState(prevLabel)
   const themeId = useAppSelector(state => state.theme.id)
   const { mutate } = useMutation({
     mutationKey: ['blocks', id],
     mutationFn: () =>
       changeBlock({
         id,
-        content: inputRef.current?.value,
+        content: inputRef.current?.value || text,
       })
         .then(() => {
           setIsLoading(false)
@@ -88,11 +89,7 @@ export default function ChangeBlock({
           )}
           {type == 'text' && (
             <div className=''>
-              <Textarea
-                ref={inputRef as RefObject<HTMLTextAreaElement>}
-                defaultValue={prevLabel}
-                placeholder='Содержание текстового блока'
-              />
+              <TextEditor text={text} setText={setText} />
             </div>
           )}
         </div>
