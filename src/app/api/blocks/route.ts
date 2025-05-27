@@ -1,5 +1,6 @@
 import prisma from '@/shared/api/prismaClient'
-import { writeFile } from 'fs/promises'
+import { randomUUID } from 'crypto'
+import { unlink, writeFile } from 'fs/promises'
 import { NextRequest } from 'next/server'
 import path from 'path'
 
@@ -58,7 +59,8 @@ export async function POST(NextRequest: NextRequest) {
         )
       const bytes = await file.arrayBuffer()
       const buffer = Buffer.from(bytes)
-      const filename = file.name.replaceAll(' ', '_')
+      const extension = path.extname(file.name)
+      const filename = randomUUID() + extension
       const uploadDir = path.join(process.cwd(), 'public/uploads')
       await writeFile(`${uploadDir}/${filename}`, buffer)
 
@@ -91,25 +93,80 @@ export async function DELETE(NextRequest: NextRequest) {
   const query = searchParams.get('id') || ''
   if (query) {
     try {
-      const block = await prisma.block.delete({
+      const deletedBlock = await prisma.block.findUnique({
         where: {
           id: query,
         },
       })
-      return new Response(JSON.stringify(block), { status: 200 })
+      const filePath = path.join(
+        process.cwd(),
+        'public/uploads',
+        deletedBlock!.content
+      )
+      await unlink(filePath)
+      await prisma.block.delete({
+        where: {
+          id: query,
+        },
+      })
+      return new Response(JSON.stringify({ message: 'Блок удалён' }), {
+        status: 200,
+      })
     } catch (err) {
       return new Response(JSON.stringify(err), { status: 403 })
     }
   }
 }
 export async function PATCH(NextRequest: NextRequest) {
-  const data = await NextRequest.json()
+  const data = await NextRequest.formData()
+  const id = data.get('id') as string
+
+  let updateData: Record<string, string | File | number> = {}
+  for (const [key, value] of data.entries()) {
+    if (key !== 'id') {
+      if (!isNaN(Number(value))) {
+        updateData[key] = Number(value)
+      } else {
+        updateData[key] = value
+      }
+    }
+  }
+  console.log(updateData)
+  const patchedBlock = await prisma.block.findUnique({
+    where: {
+      id: data.get('id')! as string,
+    },
+  })
+  console.log('-----------------------------------')
+  if (patchedBlock?.type == 'image' && data.get('content')) {
+    const filePath = path.join(
+      process.cwd(),
+      'public/uploads',
+      patchedBlock!.content
+    )
+    await unlink(filePath)
+    const file: File | null = updateData.content as File
+    console.log(file)
+    if (!file)
+      return new Response(JSON.stringify(JSON.parse(JSON.stringify(42))), {
+        status: 400,
+      })
+    const bytes = await file.arrayBuffer()
+    const extension = path.extname(file.name)
+    const buffer = Buffer.from(bytes)
+    const filename = randomUUID() + extension
+    const uploadDir = path.join(process.cwd(), 'public/uploads')
+    updateData = { content: filename }
+
+    await writeFile(`${uploadDir}/${filename}`, buffer)
+  }
+  console.log(updateData)
   try {
     const result = await prisma.block.update({
       where: {
-        id: data.id,
+        id,
       },
-      data: data,
+      data: updateData,
     })
     return new Response(JSON.stringify(result), { status: 200 })
   } catch (err) {

@@ -63,7 +63,7 @@ export default function LinkBlock({
         <div className='min-w-40 flex justify-between gap-3 mt-2'>
           <div className='flex gap-2 '>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger className='cursor-pointer nodrag'>
                 <DeleteBlock id={data.id} />
               </TooltipTrigger>
               <TooltipContent>Удалить</TooltipContent>
@@ -76,7 +76,9 @@ export default function LinkBlock({
                   id={data.id}
                 />
               </TooltipTrigger>
-              <TooltipContent>Изменить</TooltipContent>
+              <TooltipContent className='cursor-pointer nodrag'>
+                Изменить
+              </TooltipContent>
             </Tooltip>
           </div>
           <div className='flex gap-2 align-center'>

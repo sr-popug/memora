@@ -38,7 +38,7 @@ export default function ChangeBlock({
     mutationFn: () =>
       changeBlock({
         id,
-        content: inputRef.current?.value || text || file,
+        content: file || inputRef.current?.value || text,
       })
         .then(() => {
           setIsLoading(false)

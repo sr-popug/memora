@@ -19,13 +19,13 @@ export default function TextBlock({
         <div className=' flex justify-end gap-3 mt-2'>
           <div className='flex gap-2 '>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger className='cursor-pointer nodrag'>
                 <DeleteBlock id={data.id} />
               </TooltipTrigger>
               <TooltipContent>Удалить</TooltipContent>
             </Tooltip>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger className='cursor-pointer nodrag'>
                 <ChangeBlock
                   type={data.type}
                   prevLabel={data.label}

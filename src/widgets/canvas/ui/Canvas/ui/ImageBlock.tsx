@@ -15,7 +15,7 @@ export default function ImageBlock({
       <div>
         <Image
           src={'/uploads/' + data.label}
-          alt={data.id}
+          alt='block'
           width={300}
           height={200}
         />
@@ -23,10 +23,12 @@ export default function ImageBlock({
         <div className=' flex justify-end gap-3 mt-2'>
           <div className='flex gap-2 '>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger className='cursor-pointer nodrag'>
                 <DeleteBlock id={data.id} />
               </TooltipTrigger>
-              <TooltipContent>Удалить</TooltipContent>
+              <TooltipContent className='cursor-pointer nodrag'>
+                Удалить
+              </TooltipContent>
             </Tooltip>
             <Tooltip>
               <TooltipTrigger>
