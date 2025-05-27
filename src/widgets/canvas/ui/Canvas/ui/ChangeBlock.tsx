@@ -15,7 +15,8 @@ import { Label } from '@/shared/ui/label'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Loader, SquarePen } from 'lucide-react'
 import { RefObject, useRef, useState } from 'react'
-import TextEditor from './TextEditor'
+import ImageEditor from '../../ImageEditor'
+import TextEditor from '../../TextEditor'
 export default function ChangeBlock({
   id,
   prevLabel,
@@ -30,13 +31,14 @@ export default function ChangeBlock({
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
   const [text, setText] = useState(prevLabel)
+  const [file, setFile] = useState<File>()
   const themeId = useAppSelector(state => state.theme.id)
   const { mutate } = useMutation({
     mutationKey: ['blocks', id],
     mutationFn: () =>
       changeBlock({
         id,
-        content: inputRef.current?.value || text,
+        content: inputRef.current?.value || text || file,
       })
         .then(() => {
           setIsLoading(false)
@@ -90,6 +92,11 @@ export default function ChangeBlock({
           {type == 'text' && (
             <div className=''>
               <TextEditor text={text} setText={setText} />
+            </div>
+          )}
+          {type == 'image' && (
+            <div className=''>
+              <ImageEditor setFile={setFile} />
             </div>
           )}
         </div>

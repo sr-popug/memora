@@ -16,7 +16,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useReactFlow } from '@xyflow/react'
 import { Text } from 'lucide-react'
 import { useState } from 'react'
-import TextEditor from '../../Canvas/ui/TextEditor'
+import TextEditor from '../../TextEditor'
 
 export default function CreateText() {
   const [isLoading, setIsLoading] = useState(false)

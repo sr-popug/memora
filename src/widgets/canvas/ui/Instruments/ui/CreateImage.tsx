@@ -11,31 +11,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog'
-import { Input } from '@/shared/ui/input'
-import { Label } from '@/shared/ui/label'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useReactFlow } from '@xyflow/react'
 import { Image } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
+import ImageEditor from '../../ImageEditor'
 
 export default function CreateImage() {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [open, setOpen] = useState(false)
+  const [file, setFile] = useState<File>()
+
   const [isLoading, setIsLoading] = useState(false)
   const canvas = useAppSelector(state => state.canvas)
   const { id } = useAppSelector(state => state.theme)
   const queryClient = useQueryClient()
-  const [open, setOpen] = useState(false)
   const project = useReactFlow()
   const { mutate } = useMutation({
     mutationKey: ['blocks', id],
-    mutationFn: (value: string) =>
+    mutationFn: () =>
       createBlock({
-        content: value,
+        content: file!,
         themeId: id,
         positionX: project.getViewport().x + canvas.width / 1.75,
         positionY: project.getViewport().y + window.innerHeight / 2 - 80,
-        type: 'text',
+        type: 'image',
       })
         .then(() => {
           setIsLoading(false)
@@ -50,9 +50,8 @@ export default function CreateImage() {
   })
 
   function handleClick() {
-    console.log(inputRef.current?.value)
     setIsLoading(true)
-    if (inputRef.current?.value) mutate(inputRef.current?.value)
+    if (file) mutate()
     setIsLoading(false)
     setOpen(false)
   }
@@ -81,19 +80,7 @@ export default function CreateImage() {
             темы
           </DialogDescription>
         </DialogHeader>
-        <div className=''>
-          <div className=''>
-            <Label htmlFor='username' className='text-right mb-2'>
-              Ссылка
-            </Label>
-            <Input
-              ref={inputRef}
-              type='image'
-              id='link'
-              className='col-span-3'
-            />
-          </div>
-        </div>
+        <ImageEditor setFile={setFile} />
         <DialogFooter>
           <Button
             className='cursor-pointer'

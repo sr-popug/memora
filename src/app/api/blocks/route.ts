@@ -1,5 +1,8 @@
 import prisma from '@/shared/api/prismaClient'
+import { writeFile } from 'fs/promises'
 import { NextRequest } from 'next/server'
+import path from 'path'
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const themeId = searchParams.get('themeId')
@@ -47,6 +50,27 @@ export async function POST(NextRequest: NextRequest) {
       })
     }
     if (type == 'image') {
+      const file: File | null = data.get('content') as File
+      if (!file)
+        return new Response(
+          JSON.stringify(JSON.parse(JSON.stringify(result))),
+          { status: 400 }
+        )
+      const bytes = await file.arrayBuffer()
+      const buffer = Buffer.from(bytes)
+      const filename = file.name.replaceAll(' ', '_')
+      const uploadDir = path.join(process.cwd(), 'public/uploads')
+      await writeFile(`${uploadDir}/${filename}`, buffer)
+
+      result = await prisma.block.create({
+        data: {
+          content: filename || '',
+          type: (data.get('type') as string) || '',
+          positionX: (Number(data.get('positionX')) || 0) as number,
+          positionY: (Number(data.get('positionY')) || 0) as number,
+          themeId: (data.get('themeId') as string) || '',
+        },
+      })
     }
 
     return new Response(JSON.stringify(JSON.parse(JSON.stringify(result))), {
