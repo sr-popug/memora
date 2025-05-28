@@ -3,6 +3,7 @@ import {
   addEdge,
   Background,
   BackgroundVariant,
+  Connection,
   Controls,
   Node,
   OnConnect,
@@ -10,10 +11,11 @@ import {
   useEdgesState,
   useNodesState,
 } from '@xyflow/react'
-import { useCallback, useEffect } from 'react'
+import { MouseEvent, useCallback, useEffect } from 'react'
 
 import changeBlock from '@/entities/Block/api/changeBlock'
 import createEdge from '@/entities/Edge/api/createEdge'
+import deleteEdge from '@/entities/Edge/api/deleteEdge'
 import { useAppSelector } from '@/shared/lib/react/redux'
 import { Block, Edge } from '@prisma/client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -67,17 +69,23 @@ export default function Canvas({
 
   const { mutate: mutateEdge } = useMutation({
     mutationKey: ['edges', themeId],
-    mutationFn: ({ source, target }: { source: string; target: string }) =>
-      createEdge({ from: source, to: target, themeId }).then(() => {
-        queryClient.invalidateQueries({ queryKey: ['edges', themeId] })
-      }),
+    mutationFn: (params: Connection) =>
+      createEdge({ from: params.source, to: params.target, themeId }).then(
+        res => {
+          console.log(res)
+          setEdges(eds => addEdge({ ...params, id: res!.data.id }, eds))
+          queryClient.invalidateQueries({ queryKey: ['edges', themeId] })
+        }
+      ),
+  })
+  const { mutate: deleteEdgeMutate } = useMutation({
+    mutationKey: ['deleted-edges', themeId],
+    mutationFn: (id: string) => deleteEdge(id),
   })
 
   const onConnect: OnConnect = useCallback(
     params => {
-      // Добавляем ребро в состояние
-      setEdges(eds => addEdge(params, eds))
-      mutateEdge({ source: params.source, target: params.target })
+      mutateEdge(params)
     },
     [setEdges]
   )
@@ -98,7 +106,14 @@ export default function Canvas({
   const handleNodeDragStop = (event: React.MouseEvent, node: Node) => {
     mutateBlock({ id: node.id, x: node.position.x, y: node.position.y })
   }
-
+  const onEdgeClick = useCallback(
+    (event: MouseEvent<Element, MouseEvent>, edge: Edge) => {
+      event.stopPropagation() // Не передаём дальше
+      setEdges(eds => eds.filter(e => e.id !== edge.id))
+      deleteEdgeMutate(edge.id)
+    },
+    []
+  )
   return (
     <div className='w-full h-full'>
       <ReactFlow
@@ -110,6 +125,7 @@ export default function Canvas({
         onConnect={onConnect}
         onNodeDragStop={handleNodeDragStop}
         nodeTypes={nodeTypes}
+        onEdgeClick={onEdgeClick}
       >
         <Controls />
         <Background variant={BackgroundVariant.Dots} gap={15} size={1} />
