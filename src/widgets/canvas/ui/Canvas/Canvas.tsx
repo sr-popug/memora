@@ -80,7 +80,10 @@ export default function Canvas({
   })
   const { mutate: deleteEdgeMutate } = useMutation({
     mutationKey: ['deleted-edges', themeId],
-    mutationFn: (id: string) => deleteEdge(id),
+    mutationFn: (id: string) =>
+      deleteEdge(id).then(() =>
+        queryClient.invalidateQueries({ queryKey: ['edges', themeId] })
+      ),
   })
 
   const onConnect: OnConnect = useCallback(

@@ -1,4 +1,6 @@
 import deleteTheme from '@/features/theme/delete-theme/deleteTheme'
+import { useAppDispatch } from '@/shared/lib/react/redux'
+import { deleteTheme as deleteStateTheme } from '@/shared/store/slices/themeListSlice'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,12 +18,13 @@ import { Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 export default function DeleteMenu({ id }: { id: string }) {
   const queryClient = useQueryClient()
-
+  const dispatch = useAppDispatch()
   const router = useRouter()
   const { mutate } = useMutation({
     mutationKey: ['themes'],
     mutationFn: () => deleteTheme(id),
     onMutate: () => {
+      dispatch(deleteStateTheme(id))
       queryClient.invalidateQueries({ queryKey: ['themes'] }).then(() => {
         router.push('/canvas')
       })

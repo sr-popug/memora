@@ -43,9 +43,7 @@ export default function ChangeBlock({
         .then(() => {
           setIsLoading(false)
           setOpen(false)
-          queryClient
-            .invalidateQueries({ queryKey: ['blocks', themeId] })
-            .then(() => {})
+          queryClient.invalidateQueries({ queryKey: ['blocks', themeId] })
         })
         .catch(() => {
           setIsLoading(false)

@@ -1,5 +1,7 @@
 'use client'
 import addTheme from '@/entities/Themes/api/addTheme'
+import { useAppDispatch, useAppSelector } from '@/shared/lib/react/redux'
+import { addTheme as addStateTheme } from '@/shared/store/slices/themeListSlice'
 import { Button } from '@/shared/ui/button'
 import {
   Dialog,
@@ -24,6 +26,8 @@ export default function AddTheme() {
   const nameRef = useRef<HTMLInputElement>(null)
   const queryClient = useQueryClient()
   const router = useRouter()
+  const themes = useAppSelector(state => state.themeList)
+  const dispatch = useAppDispatch()
   const session = useSession()
   const { mutate } = useMutation({
     mutationKey: ['add theme'],
@@ -32,19 +36,21 @@ export default function AddTheme() {
         name: nameRef.current?.value as string,
         emoji,
         userEmail: session.data?.user.email || 'not-found',
+        position: themes.length,
       }),
     onSuccess: (data: Theme) => {
       setOpen(false)
       queryClient.invalidateQueries({ queryKey: ['themes'] }).then(() => {
         router.push(`/canvas/${data.id}`)
       })
+      dispatch(addStateTheme(data))
     },
     onError: () => {
       console.log('⨯ error')
     },
   })
   const addThemeButton = async function () {
-    console.log(emoji, nameRef.current?.value)
+    console.log(themes)
     mutate()
   }
   return (
