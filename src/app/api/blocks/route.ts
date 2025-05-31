@@ -98,12 +98,14 @@ export async function DELETE(NextRequest: NextRequest) {
           id: query,
         },
       })
-      const filePath = path.join(
-        process.cwd(),
-        'public/uploads',
-        deletedBlock!.content
-      )
-      await unlink(filePath)
+      if (deletedBlock?.type == 'image') {
+        const filePath = path.join(
+          process.cwd(),
+          'public/uploads',
+          deletedBlock!.content
+        )
+        await unlink(filePath)
+      }
       await prisma.block.delete({
         where: {
           id: query,
@@ -131,13 +133,13 @@ export async function PATCH(NextRequest: NextRequest) {
       }
     }
   }
-  console.log(updateData)
+
   const patchedBlock = await prisma.block.findUnique({
     where: {
       id: data.get('id')! as string,
     },
   })
-  console.log('-----------------------------------')
+
   if (patchedBlock?.type == 'image' && data.get('content')) {
     const filePath = path.join(
       process.cwd(),
@@ -160,7 +162,6 @@ export async function PATCH(NextRequest: NextRequest) {
 
     await writeFile(`${uploadDir}/${filename}`, buffer)
   }
-  console.log(updateData)
   try {
     const result = await prisma.block.update({
       where: {

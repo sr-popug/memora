@@ -51,7 +51,7 @@ export default function DeleteMenu({ id }: { id: string }) {
             Отмена
           </AlertDialogCancel>
           <AlertDialogAction
-            className='cursor-pointer'
+            className='cursor-pointer bg-red-900 hover:bg-red-950 text-white'
             onClick={() => mutate()}
           >
             Удалить!

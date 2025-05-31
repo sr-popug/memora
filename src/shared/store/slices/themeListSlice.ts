@@ -10,7 +10,7 @@ const initialState: Theme[] = [
   },
 ]
 export const themeListSlice = createSlice({
-  name: 'counter',
+  name: 'themeList',
   initialState,
   reducers: {
     setThemeList: (state, action: PayloadAction<Theme[]>) => {
@@ -21,7 +21,7 @@ export const themeListSlice = createSlice({
       state.push(action.payload)
     },
     deleteTheme: (state, action: PayloadAction<string>) => {
-      state.filter(el => el.id != action.payload)
+      return state.filter(el => el.id != action.payload)
     },
   },
 })
