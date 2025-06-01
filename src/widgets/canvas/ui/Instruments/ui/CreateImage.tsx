@@ -34,7 +34,7 @@ export default function CreateImage() {
         content: file!,
         themeId: id,
         positionX: project.getViewport().x + canvas.width / 1.75,
-        positionY: project.getViewport().y + window.innerHeight / 2 - 80,
+        positionY: project.getViewport().y + window.innerHeight / 2 - 90,
         type: 'image',
       })
         .then(() => {
