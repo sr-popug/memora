@@ -3,7 +3,7 @@
 import { TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip'
 import { Tooltip } from '@radix-ui/react-tooltip'
 import DOMPurify from 'dompurify'
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 
 interface Props {
   text: string
@@ -12,7 +12,7 @@ interface Props {
 
 export default function TextEditor({ text, setText }: Props) {
   const editorRef = useRef<HTMLDivElement>(null)
-  const [color, setColor] = useState('#ff0000')
+  const color = useRef('#ff0000')
 
   // Инициализация текста только один раз
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function TextEditor({ text, setText }: Props) {
   }
 
   const changeColor = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setColor(e.currentTarget.value)
+    color.current = e.currentTarget.value
   }
 
   return (
@@ -76,7 +76,9 @@ export default function TextEditor({ text, setText }: Props) {
           <Tooltip>
             <TooltipTrigger asChild>
               <button
-                onClick={() => document.execCommand('foreColor', false, color)}
+                onClick={() =>
+                  document.execCommand('foreColor', false, color.current)
+                }
                 className='px-2 py-1 bg-neutral-700 hover:bg-neutral-600 rounded cursor-pointer'
               >
                 Окрасить

@@ -1,16 +1,26 @@
 import NextAuthProvider from '@/shared/ui/providers/NextAuthProvider'
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+const SF = localFont({
+  src: [
+    {
+      path: './fonts/SFProText-Light.ttf',
+      weight: '100',
+      style: 'normal',
+    },
+    {
+      path: './fonts/SFProText-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: './fonts/SFProText-Bold.ttf',
+      weight: '800',
+      style: 'normal',
+    },
+  ],
 })
 
 export const metadata: Metadata = {
@@ -25,9 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ru'>
-      <body
-        className={`dark ${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`dark ${SF.className}antialiased`}>
         <NextAuthProvider>{children}</NextAuthProvider>
       </body>
     </html>

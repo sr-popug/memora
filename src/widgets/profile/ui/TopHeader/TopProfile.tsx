@@ -2,7 +2,6 @@ import { Button } from '@/shared/ui/button'
 import { LogOut } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import ChangeData from './ChangeData'
 
 export default function TopProfile() {
   const session = useSession()
@@ -32,7 +31,7 @@ export default function TopProfile() {
             Выйти
           </Button>
 
-          <ChangeData />
+          {/* <ChangeData /> */}
         </div>
       </div>
     </article>

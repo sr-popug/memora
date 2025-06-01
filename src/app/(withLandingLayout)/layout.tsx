@@ -7,10 +7,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <>
+    <div className='h-[100vh] overflow-hidden'>
       <Header />
       <main>{children}</main>
       <Footer />
-    </>
+    </div>
   )
 }
