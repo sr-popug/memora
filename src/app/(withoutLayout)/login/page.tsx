@@ -1,6 +1,7 @@
 import ButtonGitHub from '@/widgets/auth/ButtonGitHub'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 export default function Auth() {
   return (
@@ -23,7 +24,9 @@ export default function Auth() {
             Можно авторизоваться только через соц. сети
           </p>
           <div className='flex flex-col items-stretch w-full gap-3 max-w-[500px]'></div>
-          <ButtonGitHub />
+          <Suspense fallback={<div>Загрузка...</div>}>
+            <ButtonGitHub />
+          </Suspense>
         </div>
         <footer className='text-center'>
           <Link href='/' className='opacity-50 block mb-2 underline'>
