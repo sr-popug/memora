@@ -16,6 +16,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useReactFlow } from '@xyflow/react'
 import { Image } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import ImageEditor from '../../ImageEditor'
 
 export default function CreateImage() {
@@ -52,6 +53,7 @@ export default function CreateImage() {
   function handleClick() {
     setIsLoading(true)
     if (file) mutate()
+    if (!file) toast.error('Вы не выбрали изображение')
     setIsLoading(false)
     setOpen(false)
   }

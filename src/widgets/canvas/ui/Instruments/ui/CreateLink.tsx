@@ -1,6 +1,7 @@
 'use client'
 import createBlock from '@/entities/Block/api/createBlock'
 import { useAppSelector } from '@/shared/lib/react/redux'
+import isValidHttpUrl from '@/shared/scripts/isValidUrl'
 import { Button } from '@/shared/ui/button'
 import {
   Dialog,
@@ -18,6 +19,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useReactFlow } from '@xyflow/react'
 import { Link } from 'lucide-react'
 import { useRef, useState } from 'react'
+import { toast } from 'sonner'
 
 export default function CreateLink() {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -51,8 +53,12 @@ export default function CreateLink() {
 
   async function handleClick() {
     setIsLoading(true)
-    if (inputRef.current?.value) mutate(inputRef.current?.value)
-    else setIsLoading(false)
+    if (inputRef.current?.value && isValidHttpUrl(inputRef.current?.value))
+      mutate(inputRef.current?.value)
+    else {
+      setIsLoading(false)
+      toast.error('Введённое значение не является ссылкой')
+    }
   }
 
   return (

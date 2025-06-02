@@ -16,6 +16,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useReactFlow } from '@xyflow/react'
 import { Text } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import TextEditor from '../../TextEditor'
 
 export default function CreateText() {
@@ -54,6 +55,7 @@ export default function CreateText() {
     console.log(text)
     setIsLoading(true)
     if (text) await mutate(text)
+    if (!text) toast.error('Вы ничего не ввели в поле ввода текста')
     setIsLoading(false)
     setOpen(false)
   }
