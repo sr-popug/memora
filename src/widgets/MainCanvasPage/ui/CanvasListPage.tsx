@@ -6,7 +6,7 @@ import { setThemeList } from '@/shared/store/slices/themeListSlice'
 import Menu from '@/widgets/canvas/ui/TopInfo/Menu'
 import { Theme } from '@prisma/client'
 import { useMutation } from '@tanstack/react-query'
-import { GripVertical } from 'lucide-react'
+import { CircleX, GripVertical, LoaderCircle } from 'lucide-react'
 import Link from 'next/link'
 import { DragEvent, useEffect, useState } from 'react'
 
@@ -23,7 +23,7 @@ export default function CanvasList() {
     //     queryClient.invalidateQueries({ queryKey: ['themes'] })
     //   ),
   })
-  const { data } = useThemes()
+  const { data, isFetching } = useThemes()
   useEffect(() => {
     console.log(data, 12312312)
     if (data) dispatch(setThemeList(data))
@@ -66,7 +66,7 @@ export default function CanvasList() {
   }
   return (
     <ul className='overflow-y-auto overflow-x-hidden  max-h-[calc(100vh-180px)] scroll-thin-neutral '>
-      {themes?.length &&
+      {themes?.[0].name &&
         themes
           .slice()
           ?.sort((a, b) => a.position - b.position)
@@ -101,9 +101,16 @@ export default function CanvasList() {
             </li>
           ))}
 
-      {!data && (
-        <div className='pt-3 text-center text-neutral-600'>
-          У вас ещё нету тем.
+      {isFetching && (
+        <div className='pt-3 text-center text-neutral-200 flex flex-col items-center'>
+          <LoaderCircle className='animate-spin' />
+          Подгрузка ваших тем
+        </div>
+      )}
+      {!isFetching && !data && (
+        <div className='pt-3 text-center text-neutral-600 flex flex-col items-center'>
+          <CircleX />
+          Похоже, у вас ещё нету тем
         </div>
       )}
     </ul>

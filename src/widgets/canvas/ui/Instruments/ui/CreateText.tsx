@@ -1,6 +1,5 @@
 'use client'
-import createBlock from '@/entities/Block/api/createBlock'
-import { useAppSelector } from '@/shared/lib/react/redux'
+import useCreateBlock from '@/shared/lib/react/useCreateBlock'
 import { Button } from '@/shared/ui/button'
 import {
   Dialog,
@@ -12,8 +11,6 @@ import {
   DialogTrigger,
 } from '@/shared/ui/dialog'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useReactFlow } from '@xyflow/react'
 import { Text } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -25,37 +22,13 @@ export default function CreateText() {
 
   const [text, setText] = useState('')
 
-  const canvas = useAppSelector(state => state.canvas)
-  const { id } = useAppSelector(state => state.theme)
-  const queryClient = useQueryClient()
-  const project = useReactFlow()
-  const { mutate } = useMutation({
-    mutationKey: ['blocks', id],
-    mutationFn: (value: string) =>
-      createBlock({
-        content: value,
-        themeId: id,
-        positionX: project.getViewport().x + canvas.width / 1.75,
-        positionY: project.getViewport().y + window.innerHeight / 2 - 80,
-        type: 'text',
-      })
-        .then(() => {
-          setIsLoading(false)
-          setOpen(false)
-          queryClient
-            .invalidateQueries({ queryKey: ['blocks', id] })
-            .then(() => {})
-        })
-        .catch(() => {
-          setIsLoading(false)
-        }),
-  })
+  const { mutate } = useCreateBlock('text')
 
   async function handleClick() {
     console.log(text)
     setIsLoading(true)
     if (text) await mutate(text)
-    if (!text) toast.error('Вы ничего не ввели в поле ввода текста')
+    if (!text.length) toast.error('Вы ничего не ввели в поле ввода текста')
     setIsLoading(false)
     setOpen(false)
   }

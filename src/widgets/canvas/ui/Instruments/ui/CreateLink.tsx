@@ -1,6 +1,5 @@
 'use client'
-import createBlock from '@/entities/Block/api/createBlock'
-import { useAppSelector } from '@/shared/lib/react/redux'
+import useCreateBlock from '@/shared/lib/react/useCreateBlock'
 import isValidHttpUrl from '@/shared/scripts/isValidUrl'
 import { Button } from '@/shared/ui/button'
 import {
@@ -15,50 +14,31 @@ import {
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useReactFlow } from '@xyflow/react'
 import { Link } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 export default function CreateLink() {
   const inputRef = useRef<HTMLInputElement>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const canvas = useAppSelector(state => state.canvas)
-  const { id } = useAppSelector(state => state.theme)
-  const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
-  const project = useReactFlow()
-  const { mutate } = useMutation({
-    mutationKey: ['blocks', id],
-    mutationFn: (value: string) =>
-      createBlock({
-        content: value,
-        themeId: id,
-        positionX: project.getViewport().x + canvas.width / 1.75,
-        positionY: project.getViewport().y + window.innerHeight / 2 - 80,
-        type: 'link',
-      })
-        .then(() => {
-          setIsLoading(false)
-          setOpen(false)
-          queryClient
-            .invalidateQueries({ queryKey: ['blocks', id] })
-            .then(() => {})
-        })
-        .catch(() => {
-          setIsLoading(false)
-        }),
-  })
+  const { mutate, isPending } = useCreateBlock('link')
 
-  async function handleClick() {
-    setIsLoading(true)
-    if (inputRef.current?.value && isValidHttpUrl(inputRef.current?.value))
-      mutate(inputRef.current?.value)
-    else {
-      setIsLoading(false)
+  const handleClick = () => {
+    const value = inputRef.current?.value || ''
+    if (!isValidHttpUrl(value)) {
       toast.error('Введённое значение не является ссылкой')
+      return
     }
+
+    mutate(value, {
+      onSuccess: () => {
+        setOpen(false)
+        inputRef.current!.value = ''
+      },
+      onError: () => {
+        toast.error('Ошибка при создании блока')
+      },
+    })
   }
 
   return (
@@ -81,25 +61,20 @@ export default function CreateLink() {
         <DialogHeader>
           <DialogTitle>Добавить ссылку</DialogTitle>
           <DialogDescription>
-            Напишите ссылку на интернет ресурс в поле ниже
+            Напишите ссылку на интернет-ресурс в поле ниже
           </DialogDescription>
         </DialogHeader>
         <div className='grid gap-4 py-4'>
           <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='username' className='text-right'>
+            <Label htmlFor='link' className='text-right'>
               Ссылка
             </Label>
             <Input ref={inputRef} id='link' className='col-span-3' />
           </div>
         </div>
         <DialogFooter>
-          <Button
-            className='cursor-pointer'
-            disabled={isLoading}
-            onClick={handleClick}
-          >
-            {!isLoading && 'Создать'}
-            {isLoading && 'Загрузка...'}
+          <Button onClick={handleClick} disabled={isPending}>
+            {isPending ? 'Загрузка...' : 'Создать'}
           </Button>
         </DialogFooter>
       </DialogContent>
