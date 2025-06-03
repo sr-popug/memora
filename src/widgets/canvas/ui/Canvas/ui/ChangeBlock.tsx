@@ -15,6 +15,7 @@ import { Label } from '@/shared/ui/label'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Loader, SquarePen } from 'lucide-react'
 import { RefObject, useRef, useState } from 'react'
+import { toast } from 'sonner'
 import ImageEditor from '../../ImageEditor'
 import TextEditor from '../../TextEditor'
 export default function ChangeBlock({
@@ -35,10 +36,15 @@ export default function ChangeBlock({
   const themeId = useAppSelector(state => state.theme.id)
   const { mutate } = useMutation({
     mutationKey: ['blocks', id],
-    mutationFn: () =>
-      changeBlock({
+    mutationFn: () => {
+      let content: File | string
+      if (type === 'image') content = file!
+      else if (type === 'link') content = inputRef.current?.value || ''
+      else content = text
+
+      return changeBlock({
         id,
-        content: file || inputRef.current?.value || text,
+        content,
       })
         .then(() => {
           setIsLoading(false)
@@ -47,8 +53,20 @@ export default function ChangeBlock({
         })
         .catch(() => {
           setIsLoading(false)
-        }),
+        })
+    },
   })
+  function handleClick() {
+    if (
+      (type === 'link' && !inputRef.current?.value) ||
+      (type === 'text' && !text.trim()) ||
+      (type === 'image' && !file)
+    ) {
+      toast.error('Пожалуйста, заполните данные перед сохранением')
+      return
+    }
+    mutate()
+  }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger disabled={isLoading} asChild>
@@ -102,7 +120,7 @@ export default function ChangeBlock({
           <Button
             className='cursor-pointer'
             disabled={isLoading}
-            onClick={() => mutate()}
+            onClick={handleClick}
           >
             {!isLoading && 'Изменить'}
             {isLoading && 'Загрузка...'}
