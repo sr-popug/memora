@@ -6,7 +6,7 @@ import Image from 'next/image'
 export default function TopProfile() {
   const session = useSession()
   return (
-    <article className='mt-5 flex gap-7'>
+    <article className='mt-5 flex gap-7 flex-wrap w-full justify-center lg:justify-start'>
       {session.data?.user?.image && (
         <Image
           src={session.data?.user?.image}
@@ -16,16 +16,20 @@ export default function TopProfile() {
           className='rounded-full'
         />
       )}
-      <div className='flex flex-col justify-between items-start'>
+      <div className='flex flex-col  justify-between items-start'>
         <div className='top'>
-          <h2 className='text-3xl font-bold'>{session.data?.user?.name}</h2>
-          <p className='text-neutral-600'>{session.data?.user?.email}</p>
+          <h2 className='text-center lg:text-left text-3xl font-bold'>
+            {session.data?.user?.name}
+          </h2>
+          <p className=' text-center lg:text-left text-neutral-600'>
+            {session.data?.user?.email}
+          </p>
         </div>
-        <div className='flex gap-2'>
+        <div className='flex gap-2 w-full justify-center lg:justify-start'>
           <Button
             onClick={() => signOut()}
             variant='destructive'
-            className='cursor-pointer'
+            className='cursor-pointer mt-2'
           >
             <LogOut />
             Выйти

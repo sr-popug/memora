@@ -1,10 +1,10 @@
+import pagesConfig from '@/shared/configs/pagesConfig'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/shared/ui/tooltip'
-import { Blocks, UserCircle } from 'lucide-react'
 import Link from 'next/link'
 
 export default function AsideHeader() {
@@ -12,19 +12,8 @@ export default function AsideHeader() {
     <aside className='p-3 pt-4 border-r-1 border-neutral-800 h-[100vh]'>
       <TooltipProvider>
         <nav>
-          <ul className='flex flex-col items-center gap-8'>
-            {[
-              {
-                title: 'Поле тем',
-                link: '/canvas',
-                icon: <Blocks />,
-              },
-              {
-                title: 'Ваш профиль',
-                link: '/profile',
-                icon: <UserCircle />,
-              },
-            ].map(el => {
+          <ul className='flex lg:flex-col items-center gap-8'>
+            {pagesConfig.main.map(el => {
               return (
                 <li key={el.title}>
                   <Link href={el.link}>

@@ -28,7 +28,7 @@ export default function CanvasPage() {
   }, [])
   if (data.blocksLoading || data.edgesLoading) {
     return (
-      <div className='w-full h-[94%] flex items-center justify-center flex-col gap-5'>
+      <div className='w-full h-full flex items-center justify-center flex-col gap-5'>
         <LoaderCircle className='animate-spin' width={50} height={50} />{' '}
         <p className='text-2xl font-bold'>Загрузка...</p>
       </div>
@@ -36,14 +36,14 @@ export default function CanvasPage() {
   }
   if (data.blocksError || data.edgesError) {
     return (
-      <div className='w-full h-[94%] flex items-center justify-center flex-col gap-5'>
+      <div className='w-full h-full flex items-center justify-center flex-col gap-5'>
         <RefreshCwOff width={50} height={50} />
         <p className='text-2xl font-bold'>Ошибка загрузки данных</p>
       </div>
     )
   }
   return (
-    <article className='relative w-full h-[94%]'>
+    <article className='relative w-full h-full'>
       <ReactFlowProvider>
         <div className='absolute  w-full h-full'>
           <TopInfo />

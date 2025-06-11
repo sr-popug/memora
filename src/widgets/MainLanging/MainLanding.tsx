@@ -13,7 +13,7 @@ export default function MainLanding() {
           alt='background'
         />
       </article>
-      <article className='max-w-[1200px] mx-auto pt-28'>
+      <article className='max-w-[1200px] mx-auto pt-14 lg:pt-28'>
         <Main />
       </article>
     </article>

@@ -3,7 +3,7 @@ import changeTheme from '@/entities/Themes/api/changeTheme'
 import { useAppDispatch, useAppSelector } from '@/shared/lib/react/redux'
 import useThemes from '@/shared/lib/react/useThemes'
 import { setThemeList } from '@/shared/store/slices/themeListSlice'
-import Menu from '@/widgets/canvas/ui/TopInfo/Menu'
+import Menu from '@/widgets/canvas/ui/TopInfo/ui/Menu'
 import { Theme } from '@prisma/client'
 import { useMutation } from '@tanstack/react-query'
 import { CircleX, GripVertical, LoaderCircle } from 'lucide-react'
@@ -85,18 +85,20 @@ export default function CanvasList() {
             >
               <Link href={'canvas/' + theme.id}>
                 <div className='flex items-center gap-2 min-w-50'>
-                  <div className='p-1 w-8 h-8 text-xl   rounded-lg flex items-center justify-center'>
+                  <div className='p-1 w-6 h-6 lg:w-8 lg:h-8 text-sm lg:text-xl   rounded-lg flex items-center justify-center'>
                     {theme.emoji}
                   </div>
-                  <h2 className='whitespace-nowrap text-xl font-bold'>
+                  <h2 className='whitespace-nowrap text-lg lg:text-xl font-bold'>
                     {theme.name}
                   </h2>
                 </div>
-                <p className='text-neutral-700'>{theme.id}</p>
+                <p className='text-neutral-700 text-[10px] lg:text-sm'>
+                  {theme.id}
+                </p>
               </Link>
               <div className='buttons flex items-center gap-2'>
                 <Menu id={theme.id} name={theme.name} />
-                <GripVertical className='text-neutral-800' />
+                <GripVertical className='text-neutral-800 hidden lg:block cursor-pointer' />
               </div>
             </li>
           ))}

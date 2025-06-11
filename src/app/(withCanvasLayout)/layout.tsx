@@ -19,15 +19,17 @@ export default function CanvasLayout({
   return (
     <ReduxProvider>
       <QueryProvider>
-        <div className='flex '>
-          <AsideHeader />
+        <section className='flex '>
+          <div className='hidden lg:block'>
+            <AsideHeader />
+          </div>
           <Themes />
 
-          <div className=' w-full'>
+          <section className=' w-full h-screen flex flex-col'>
             <TopHeader />
-            {children}
-          </div>
-        </div>
+            <article className='flex-1 overflow-y-auto'>{children}</article>
+          </section>
+        </section>
         <Toaster richColors theme='dark' />
       </QueryProvider>
     </ReduxProvider>
