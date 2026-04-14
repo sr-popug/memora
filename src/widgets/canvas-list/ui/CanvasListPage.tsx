@@ -65,7 +65,7 @@ export default function CanvasList() {
     return (
       <div className=' text-center text-neutral-600'>
         {' '}
-        <FileWarning width={30} height={30} /> Тем пока нет
+        <FileWarning width={30} height={30} /> Тем пока нет...
       </div>
     );
   }
