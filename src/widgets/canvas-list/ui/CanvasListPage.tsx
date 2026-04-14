@@ -1,14 +1,14 @@
-"use client";
-import changeTheme from "@/entities/Themes/api/changeTheme";
-import { useAppDispatch, useAppSelector } from "@/shared/lib/react/redux";
-import useThemes from "@/shared/lib/react/useThemes";
-import { setThemeList } from "@/shared/store/slices/themeListSlice";
-import Menu from "@/widgets/canvas/ui/TopInfo/ui/Menu";
-import { Theme } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
-import { CircleX, GripVertical, LoaderCircle } from "lucide-react";
-import Link from "next/link";
-import { DragEvent, useEffect, useState } from "react";
+'use client';
+import changeTheme from '@/entities/Themes/api/changeTheme';
+import { useAppDispatch, useAppSelector } from '@/shared/lib/react/redux';
+import useThemes from '@/shared/lib/react/useThemes';
+import { setThemeList } from '@/shared/store/slices/themeListSlice';
+import Menu from '@/widgets/canvas/ui/TopInfo/ui/Menu';
+import { Theme } from '@prisma/client';
+import { useMutation } from '@tanstack/react-query';
+import { CircleX, GripVertical, LoaderCircle } from 'lucide-react';
+import Link from 'next/link';
+import { DragEvent, useEffect, useState } from 'react';
 
 export default function CanvasList() {
   const [currentTheme, setCurrentTheme] = useState<Theme>();
@@ -16,7 +16,7 @@ export default function CanvasList() {
   const themes = useAppSelector(state => state.themeList);
 
   const { mutate } = useMutation({
-    mutationKey: ["themes"],
+    mutationKey: ['themes'],
     mutationFn: ({ id, position }: { id: string; position: number }) =>
       changeTheme({ id, position }),
   });
@@ -38,7 +38,7 @@ export default function CanvasList() {
   function dragStartHandler(
     e: DragEvent<HTMLLIElement>,
     theme: Theme,
-    i: number
+    i: number,
   ) {
     setCurrentTheme({ ...theme, position: i });
   }
@@ -57,8 +57,16 @@ export default function CanvasList() {
             return { ...c, position: theme!.position };
           }
           return c;
-        })
-      )
+        }),
+      ),
+    );
+  }
+  if (themes === null || isFetching) {
+    return (
+      <div className='w-full h-full flex items-center justify-center flex-col gap-5'>
+        <LoaderCircle className='animate-spin' width={50} height={50} />{' '}
+        <p className='text-2xl font-bold'>Загрузка...</p>
+      </div>
     );
   }
   return (
@@ -80,7 +88,7 @@ export default function CanvasList() {
               onDragLeave={e => dragLeaveHandler(e)}
               onDrop={e => dropHandler(e, theme, i)}
             >
-              <Link href={"canvas/" + theme.id}>
+              <Link href={'canvas/' + theme.id}>
                 <div className='flex items-center gap-2 min-w-50'>
                   <div className='p-1 w-6 h-6 lg:w-8 lg:h-8 text-sm lg:text-xl   rounded-lg flex items-center justify-center'>
                     {theme.emoji}
