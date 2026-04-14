@@ -51,9 +51,10 @@ export default function ChangeMenu({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className=' cursor-pointer' variant='outline'>
-          <Pen /> Изменить
-        </Button>
+        <div className='flex gap-2 items-center justify-between p-1 cursor-pointer hover:bg-neutral'>
+          Изменить
+          <Pen width={16} height={16} className='text-neutral-600' />
+        </div>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>

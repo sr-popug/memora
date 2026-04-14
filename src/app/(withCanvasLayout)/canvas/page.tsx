@@ -1,4 +1,4 @@
-import MainCanvasPage from '@/widgets/MainCanvasPage/MainCanvasPage'
+import MainCanvasPage from '@/widgets/canvas-list/MainCanvasPage'
 
 export default function Canvas() {
   return <MainCanvasPage />

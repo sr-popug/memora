@@ -1,30 +1,37 @@
 import { Button } from '@/shared/ui/button'
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/shared/ui/hover-card'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/shared/ui/dropdown-menu'
 import { EllipsisVerticalIcon } from 'lucide-react'
 import ChangeMenu from './ChangeMenu'
 import DeleteMenu from './DeleteMenu'
-
 export default function Menu({ id, name }: { id: string; name: string }) {
   return (
-    <HoverCard>
-      <HoverCardTrigger asChild>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <Button
           variant='outline'
           className='w-8 h-8 rounded-full cursor-pointer'
         >
           <EllipsisVerticalIcon />
         </Button>
-      </HoverCardTrigger>
-      <HoverCardContent className='w-50'>
-        <div className='flex flex-col  gap-2'>
-          <ChangeMenu prevName={name} id={id} />
-          <DeleteMenu id={id} />
-        </div>
-      </HoverCardContent>
-    </HoverCard>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className='w-56' align='start'>
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <ChangeMenu prevName={name} id={id} />
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <DeleteMenu id={id} />
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

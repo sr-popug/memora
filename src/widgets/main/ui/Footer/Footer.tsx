@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className='p-5 flex justify-between items-center border-t border-t-neutral-800'>
+    <footer className='py-5 max-w-[1200px] mx-auto flex justify-between items-center border-t border-t-neutral-800'>
       <p className='text-neutral-600'>
         Created by{' '}
         <a

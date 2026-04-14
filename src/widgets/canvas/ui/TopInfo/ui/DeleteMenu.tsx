@@ -12,7 +12,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/shared/ui/alert-dialog'
-import { Button } from '@/shared/ui/button'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -33,9 +32,10 @@ export default function DeleteMenu({ id }: { id: string }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant='destructive' className='cursor-pointer'>
-          <Trash /> Удалить
-        </Button>
+        <div className='flex gap-2 items-center justify-between p-1  cursor-pointer'>
+          Удалить
+          <Trash width={16} height={16} className='text-red-400' />
+        </div>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

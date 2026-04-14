@@ -1,4 +1,4 @@
-import MainLanding from '@/widgets/MainLanging/MainLanding'
+import MainLanding from '@/widgets/main/MainLanding'
 
 export default function Home() {
   return <MainLanding />

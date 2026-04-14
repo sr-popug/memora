@@ -1,5 +1,5 @@
-import Footer from '@/widgets/MainLanging/ui/Footer/Footer'
-import Header from '@/widgets/MainLanging/ui/Header/Header'
+import Footer from '@/widgets/main/ui/Footer/Footer'
+import Header from '@/widgets/main/ui/Header/Header'
 
 export default function RootLayout({
   children,
@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className='h-[100vh] overflow-hidden'>
+    <div className='h-[calc(100vh + 80px)] overflow-hidden'>
       <Header />
       <main>{children}</main>
       <Footer />
