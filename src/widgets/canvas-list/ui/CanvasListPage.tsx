@@ -6,7 +6,7 @@ import { setThemeList } from '@/shared/store/slices/themeListSlice';
 import Menu from '@/widgets/canvas/ui/TopInfo/ui/Menu';
 import { Theme } from '@prisma/client';
 import { useMutation } from '@tanstack/react-query';
-import { CircleX, GripVertical, LoaderCircle } from 'lucide-react';
+import { CircleX, FileWarning, GripVertical, LoaderCircle } from 'lucide-react';
 import Link from 'next/link';
 import { DragEvent, useEffect, useState } from 'react';
 
@@ -61,11 +61,11 @@ export default function CanvasList() {
       ),
     );
   }
-  if (themes === null || isFetching) {
+  if (!themes || themes.length === 0) {
     return (
-      <div className='w-full h-full flex items-center justify-center flex-col gap-5'>
-        <LoaderCircle className='animate-spin' width={50} height={50} />{' '}
-        <p className='text-2xl font-bold'>Загрузка...</p>
+      <div className=' text-center text-neutral-600'>
+        {' '}
+        <FileWarning width={30} height={30} /> Тем пока нет
       </div>
     );
   }
