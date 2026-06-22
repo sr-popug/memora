@@ -1,11 +1,12 @@
-import pagesConfig from '@/shared/configs/pagesConfig'
+'use client';
+import pagesConfig from '@/shared/configs/pagesConfig';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/shared/ui/tooltip'
-import Link from 'next/link'
+} from '@/shared/ui/tooltip';
+import Link from 'next/link';
 
 export default function AsideHeader() {
   return (
@@ -27,11 +28,11 @@ export default function AsideHeader() {
                     </Tooltip>
                   </Link>
                 </li>
-              )
+              );
             })}
           </ul>
         </nav>
       </TooltipProvider>
     </aside>
-  )
+  );
 }

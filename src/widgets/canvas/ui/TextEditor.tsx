@@ -1,35 +1,34 @@
-'use client'
+'use client';
 
-import { TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip'
-import { Tooltip } from '@radix-ui/react-tooltip'
-import DOMPurify from 'dompurify'
-import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
+import { TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+import { Tooltip } from '@radix-ui/react-tooltip';
+import DOMPurify from 'dompurify';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 
 interface Props {
-  text: string
-  setText: Dispatch<SetStateAction<string>>
+  text: string;
+  setText: Dispatch<SetStateAction<string>>;
 }
 
 export default function TextEditor({ text, setText }: Props) {
-  const editorRef = useRef<HTMLDivElement>(null)
-  const color = useRef('#ff0000')
+  const editorRef = useRef<HTMLDivElement>(null);
+  const color = useRef('#ff0000');
 
-  // Инициализация текста только один раз
   useEffect(() => {
     if (editorRef.current && text) {
-      editorRef.current.innerHTML = DOMPurify.sanitize(text)
+      editorRef.current.innerHTML = DOMPurify.sanitize(text);
     }
-  }, [])
+  }, []);
 
   const handleChange = () => {
     if (editorRef.current) {
-      setText(editorRef.current.innerHTML)
+      setText(editorRef.current.innerHTML);
     }
-  }
+  };
 
   const changeColor = (e: React.ChangeEvent<HTMLInputElement>) => {
-    color.current = e.currentTarget.value
-  }
+    color.current = e.currentTarget.value;
+  };
 
   return (
     <div className='border p-2 rounded shadow space-y-4 bg-neutral-900 text-neutral-100'>
@@ -105,9 +104,9 @@ export default function TextEditor({ text, setText }: Props) {
         ref={editorRef}
         onInput={handleChange}
         contentEditable
-        className='min-h-[200px] border border-neutral-700 p-2 rounded bg-neutral-800 text-neutral-100'
+        className='min-h-[200px] w-full border scroll-thin-neutral border-neutral-700 p-2 rounded bg-neutral-900 text-neutral-100'
         suppressContentEditableWarning={true}
       />
     </div>
-  )
+  );
 }
